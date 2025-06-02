@@ -1,6 +1,6 @@
-Mosi: 10
+Mosi: 7
 SCLK: 6
-CS: 7
+CS: 10
 DC: 8
 RST: 3
 BUSY: 2
