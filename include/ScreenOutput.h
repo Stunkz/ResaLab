@@ -1,8 +1,6 @@
 #ifndef SCREENOUTPUT_H
 #define SCREENOUTPUT_H
 
-#define ENABLE_GxEPD2_GFX 0
-
 #include <GxEPD2_BW.h>
 #include <GxEPD2_3C.h>
 #include <Fonts/FreeMonoBold9pt7b.h>
@@ -14,7 +12,7 @@ class ScreenOutput {
     private:
         static const int SS = 10; // Chip Select pin for SPI
         static const int DC = 8;  // Data/Command pin for SPI
-        static const int RES = 3; 
+        static const int RES = 3;
         static const int BUSY = 2;
 
         static const int SCK = 6;
@@ -25,8 +23,8 @@ class ScreenOutput {
         static const int SPI_MODE = SPI_MODE0;
         static const int SPI_BIT_ORDER = MSBFIRST;
 
-        SPIClass SPIn = SPIClass(SPI_BUS);
-        GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display;
+        SPIClass SPIn;
+        GxEPD2_BW<GxEPD2_213, GxEPD2_213::HEIGHT> display;
 
         void initDisplay() {
             display.setRotation(1); // Set rotation if needed
@@ -40,9 +38,13 @@ class ScreenOutput {
         }
 
     public:
-        ScreenOutput() : display(GxEPD2_290_BS(SS, DC, RES, BUSY)) {
+        ScreenOutput()
+            : SPIn(SPI_BUS),
+              display(GxEPD2_213(SS, DC, RES, BUSY))
+        {
             SPIn.begin(SCK, MISO, MOSI, SS);
-            display.init(SPI_SPEED, true, 10, fals, SPIn, SPISettings(SPI_SPEED, SPI_BIT_ORDER, SPI_MODE));
+            display.init(SPI_SPEED, true, 10, false, SPIn, SPISettings(SPI_SPEED, SPI_BIT_ORDER, SPI_MODE));
+            initDisplay();
         }
 
 };
