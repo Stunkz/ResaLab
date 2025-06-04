@@ -24,7 +24,7 @@ class ScreenOutput {
         static const int SPI_BIT_ORDER = MSBFIRST;
 
         SPIClass SPIn;
-        GxEPD2_BW<GxEPD2_213, GxEPD2_213::HEIGHT> display;
+        GxEPD2_BW<GxEPD2_290, GxEPD2_290::HEIGHT> display;
 
         void initDisplay() {
             display.setRotation(1); // Set rotation if needed
