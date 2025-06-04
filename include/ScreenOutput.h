@@ -10,10 +10,10 @@
 class ScreenOutput {
 
     private:
-        static const int SS = 10; // Chip Select pin for SPI
-        static const int DC = 8;  // Data/Command pin for SPI
-        static const int RES = 3;
-        static const int BUSY = 2;
+        const int SS = 10; // Chip Select pin for SPI
+        const int DC = 8;  // Data/Command pin for SPI
+        const int RES = 3;
+        const int BUSY = 2;
 
         static const int SCK = 6;
         static const int MISO = -1;
@@ -24,7 +24,7 @@ class ScreenOutput {
         static const int SPI_BIT_ORDER = MSBFIRST;
 
         SPIClass SPIn;
-        GxEPD2_BW<GxEPD2_290, GxEPD2_290::HEIGHT> display;
+        GxEPD2_BW<GxEPD2_290_BS, GxEPD2_290_BS::HEIGHT> display;
 
         void initDisplay() {
             display.setRotation(1); // Set rotation if needed
@@ -34,19 +34,27 @@ class ScreenOutput {
             display.fillScreen(GxEPD_WHITE);
             display.setCursor(0, 20);
             display.print("ResaLab");
-            display.update();
         }
 
     public:
         ScreenOutput()
             : SPIn(SPI_BUS),
-              display(GxEPD2_213(SS, DC, RES, BUSY))
+              display(GxEPD2_290_BS(SS, DC, RES, BUSY))
         {
             SPIn.begin(SCK, MISO, MOSI, SS);
             display.init(SPI_SPEED, true, 10, false, SPIn, SPISettings(SPI_SPEED, SPI_BIT_ORDER, SPI_MODE));
             initDisplay();
         }
 
+        void showHour(int hour, int minute) {
+            // TODO
+        }
+
+        void showInternetState(bool connected) {
+            // TODO
+        }
+
+        void 
 };
 
 
