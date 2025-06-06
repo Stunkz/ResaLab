@@ -54,7 +54,6 @@ class ScreenOutput {
             // TODO
         }
 
-        void 
 };
 
 

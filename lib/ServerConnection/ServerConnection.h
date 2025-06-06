@@ -4,9 +4,9 @@
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <ErrorCode.h>
-#include <ServerRequest.h>
-#include <NfcHandler.h>
 #include <WiFi.h>
+#include "ServerRequest.h"
+
 
 class ServerConnection {
 

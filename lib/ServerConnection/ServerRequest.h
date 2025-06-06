@@ -13,5 +13,7 @@ constexpr const char* INVALID_REQUEST = "400";        // 400 = The request is in
 
 // Server request
 constexpr const char* CARD_ID_VERIFICATION = "101";   // 101 = Card ID verification
+constexpr const char* GET_TIME = "102";               // 102 = Get the current time
+constexpr const char* GET_NEXT_RESERVATION = "103";   // 103 = Get the next reservation
 
 #endif // SERVER_REQUEST_H
