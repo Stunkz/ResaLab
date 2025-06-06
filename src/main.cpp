@@ -1,19 +1,19 @@
 #include <Arduino.h>
 #include <ScreenOutput.h>
 
-// put function declarations here:
-int myFunction(int, int);
+#include <ServerConnection.h>
+
+
+extern "C" int lwip_hook_ip6_input(void *p) {
+  return 1; // Retourne 1 pour indiquer que le paquet IPv6 est accepté
+}
+
+ServerConnection server = ServerConnection();
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
 }
