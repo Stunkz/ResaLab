@@ -8,7 +8,7 @@
 
 #include "Identifier.h"
 
-#define ORANGE_PIN 2 // Pin for the orange LED
+#define ORANGE_PIN 9 // Pin for the orange LED
 
 extern "C" int lwip_hook_ip6_input(void *p) {
   return 1; // Retourne 1 pour indiquer que le paquet IPv6 est accepté
