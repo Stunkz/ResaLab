@@ -1,10 +1,12 @@
 #include "ServerConnection.h"
 
-ServerConnection::ServerConnection() : http(HTTPClient()) {
+ServerConnection::ServerConnection() : http() {
 }
 
 uint8_t ServerConnection::connect(String url) {
     bool success;
+
+    this->url = url;
 
     success = http.begin(url);
     if (!success) {
@@ -19,6 +21,12 @@ uint8_t ServerConnection::connect(String url) {
     }
 
     return CODE_SUCCESS;
+}
+
+uint8_t ServerConnection::reconnect() {
+    http.end();
+
+    return connect(url);
 }
 
 uint8_t ServerConnection::checkConnection() {

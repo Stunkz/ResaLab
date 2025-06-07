@@ -3,42 +3,87 @@
 
 #include <ScreenOutput.h>
 #include <ServerConnection.h>
-#include <ErrorCode.h>
+
+#include <led.h>
 
 #include "Identifier.h"
+
+#define ORANGE_PIN 2 // Pin for the orange LED
 
 extern "C" int lwip_hook_ip6_input(void *p) {
   return 1; // Retourne 1 pour indiquer que le paquet IPv6 est accepté
 }
 
-ServerConnection server = ServerConnection();
+ServerConnection server;
 
-void setupWifiConnection();
-void setupServerConnection();
+volatile bool isWifiConnected = false;
+
+struct ConnectionTaskParameter {
+  ServerConnection *server;
+  WiFiClass *wifi;
+  volatile bool *isWifiConnected;
+  Led *orangeLed;
+};
+
+TaskHandle_t connectionTaskHandle = NULL;
+
+Led orangeLed = Led(ORANGE_PIN);
+
+void connectionHandler(void *parameter);
 
 void setup() {
+  Serial.begin(115200);
 
+  WiFi.begin(ssid, password);
+  ConnectionTaskParameter params = {
+    .server = &server,
+    .wifi = &WiFi,
+    .isWifiConnected = &isWifiConnected,
+    .orangeLed = &orangeLed
+  };
+  
+  xTaskCreate(
+    connectionHandler,
+    "ConnectionHandler",
+    2048,
+    (void *)&params,
+    1,
+    &connectionTaskHandle
+  );
+
+  
 }
 
 void loop() {
 
 }
 
-void setupWifiConnection() {
-  WiFi.begin(ssid, password);
+void connectionHandler(void *parameter) {
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-  }
-}
+  // Cast the parameter to the expected type
+  ConnectionTaskParameter *params = (ConnectionTaskParameter *)parameter;
+  ServerConnection *server = params->server;
+  WiFiClass *wifi = params->wifi;
+  volatile bool *isWifiConnected = params->isWifiConnected;
+  Led *orangeLed = params->orangeLed;
 
-void setupServerConnection() {
-  do {
-    errorCode = server.connect(host);
-
-    if (errorCode != CODE_SUCCESS) {
-      delay(1000);
-    } else {
+  uint8_t errorCode;
+  while (true) {
+    if (!(*isWifiConnected)) {
+      wifi->reconnect();
+      server->reconnect();
     }
-  } while (errorCode != CODE_SUCCESS);
+    errorCode = server->checkConnection();
+    
+    if (errorCode == ERROR_WIFI_DISCONNECTED) {
+      orangeLed->blink(1000);
+    }
+
+    if (errorCode == ERROR_SERVER_DISCONNECTED) {
+      orangeLed->blink(500, 250);
+      orangeLed->blink(500, 1000);
+    }
+
+    *isWifiConnected = (errorCode == CODE_SUCCESS);
+  }
 }
