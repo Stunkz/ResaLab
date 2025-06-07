@@ -8,15 +8,25 @@
 
 #include "Identifier.h"
 
-#define ORANGE_PIN 9 // Pin for the orange LED
+#define GREEN_LED_PIN 0
+#define ORANGE_LED_PIN 9
+#define RED_LED_PIN 1
+
 
 extern "C" int lwip_hook_ip6_input(void *p) {
   return 1; // Retourne 1 pour indiquer que le paquet IPv6 est accepté
 }
 
-ServerConnection server;
-
 volatile bool isWifiConnected = false;
+
+ServerConnection server;
+TaskHandle_t connectionTaskHandle = NULL;
+
+ScreenOutput screenOutput;
+
+Led greenLed = Led(GREEN_LED_PIN);
+Led orangeLed = Led(ORANGE_LED_PIN);
+Led redLed = Led(RED_LED_PIN);
 
 struct ConnectionTaskParameter {
   ServerConnection *server;
@@ -25,15 +35,16 @@ struct ConnectionTaskParameter {
   Led *orangeLed;
 };
 
-TaskHandle_t connectionTaskHandle = NULL;
-
-Led orangeLed = Led(ORANGE_PIN);
-
 void connectionHandler(void *parameter);
+
+void mainSreen();
 
 void setup() {
   Serial.begin(115200);
 
+  Serial.println("Starting ResaLab...");
+
+  screenOutput.showLoading();
   WiFi.begin(ssid, password);
   ConnectionTaskParameter params = {
     .server = &server,
@@ -50,12 +61,13 @@ void setup() {
     1,
     &connectionTaskHandle
   );
-
   
 }
 
 void loop() {
+  if (!isWifiConnected) {
 
+  }
 }
 
 void connectionHandler(void *parameter) {
@@ -86,4 +98,14 @@ void connectionHandler(void *parameter) {
 
     *isWifiConnected = (errorCode == CODE_SUCCESS);
   }
+}
+
+void mainScreen() {
+  int hour = 12; // Example hour
+  int minute = 30; // Example minute
+
+  screenOutput.showHour(hour, minute);
+  screenOutput.showInternetState(isWifiConnected);
+
+  
 }

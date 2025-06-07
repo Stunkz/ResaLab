@@ -54,6 +54,10 @@ class ScreenOutput {
             // TODO
         }
 
+        void showLoading() {
+            // TTOOOODO
+        }
+
 };
 
 
