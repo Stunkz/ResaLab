@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LT8607EMSE#TRPBF
+D Wide Input Voltage Range: 3.0V to 42V n Ultralow Quiescent Current Burst Mode Operation n <3A IQ Regulating 12VIN to 3.3VOUT n Output Ripple <10mVP-P n High Efficiency 2MHz Synchronous Operation n >93% Efficiency at 0.5A, 12VIN to 5VOUT n 750mA Maximum Continuous Output
+K
+F https://www.analog.com/LT8607/datasheet
+$ENDCMP
+#
+#End Doc Library

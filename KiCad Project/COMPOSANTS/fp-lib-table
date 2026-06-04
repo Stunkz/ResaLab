@@ -1,0 +1,6 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "Néopixel_WS2812B") (type "KiCad") (uri "${KIPRJMOD}/Néopixel_WS2812B") (options "") (descr ""))
+	(lib (name "LT8607_pretty") (type "KiCad") (uri "${KIPRJMOD}/KiCad/LT8607_pretty") (options "") (descr ""))
+	(lib (name "ESP_32_pretty") (type "KiCad") (uri "${KIPRJMOD}/KiCad/composant_ESP32_C3_MINI_1/ESP_32_pretty") (options "") (descr ""))
+)
